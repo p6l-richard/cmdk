@@ -128,7 +128,7 @@ type Context = {
   labelId: string
   inputId: string
   // Refs
-  listInnerRef: React.RefObject<HTMLDivElement | null>
+  listInnerRef?: React.RefObject<HTMLDivElement | null>
 }
 type State = {
   search: string
@@ -482,7 +482,7 @@ const Command = React.forwardRef<HTMLDivElement, CommandProps>((props, forwarded
   }
 
   function getValidItems() {
-    return Array.from(listInnerRef.current?.querySelectorAll(VALID_ITEM_SELECTOR) || [])
+    return Array.from(listInnerRef.current ? listInnerRef.current?.querySelectorAll(VALID_ITEM_SELECTOR) : [])
   }
 
   /** Setters */
@@ -783,7 +783,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, forwardedRe
   const context = useCommand()
 
   const selectedItemId = React.useMemo(() => {
-    const item = context.listInnerRef.current?.querySelector(
+    const item = context.listInnerRef?.current?.querySelector(
       `${ITEM_SELECTOR}[${VALUE_ATTR}="${encodeURIComponent(value)}"]`,
     )
     return item?.getAttribute('id')
